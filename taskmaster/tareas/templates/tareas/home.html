@@ -1,0 +1,53 @@
+{% extends 'tareas/layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Oliwis {{user.username}} </h1>
+
+<a href="{% url 'crearTarea' %}">Crear Tarea</a>
+
+
+
+
+{% for tarea in context %}
+<!-- Button to Open the Modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal{{ tarea.id }}">
+    {{ tarea.titulo }}
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal{{ tarea.id }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{ tarea.titulo }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                {{ tarea.descripcion }}
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <form action="{% url 'eliminarTarea' tarea.id %}" method='POST' style="display: inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                </form> 
+                <a href="{% url 'editarTarea' tarea.id %}" class="btn btn-link">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+{% endblock content %}
+
+
+
+
